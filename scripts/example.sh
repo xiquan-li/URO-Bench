@@ -69,6 +69,7 @@ do
     conda activate yrq-omni
 
     # inference
+    # please modify this part according to your "inference_for_eval.py"
     cd $code_dir/examples/${model_name}-test
     # -m debugpy --listen 5678 --wait-for-client
     python $code_dir/examples/${model_name}-test/inference_for_eval.py \
@@ -146,6 +147,7 @@ do
     conda activate yrq-omni
 
     # inference
+    # please modify this part according to your "inference_multi.py"
     cd $code_dir/examples/${model_name}-test
     # python -m debugpy --listen 5678 --wait-for-client
     python $code_dir/examples/${model_name}-test/inference_multi.py \

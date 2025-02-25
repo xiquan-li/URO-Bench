@@ -66,6 +66,7 @@ def main():
             response = respond(input_path, output_path)
             logging.info(f"Input text: {input_text}")
             logging.info(f"Output text: {response}")
+            logging.info(f"Output audio saved to {output_audio_dir}/{step:04d}.wav")
             pt.write({str(step).zfill(4): response})
             qt.write({str(step).zfill(4): input_text})
             if isinstance(target_text, list):

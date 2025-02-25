@@ -604,6 +604,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])
@@ -634,6 +636,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])
@@ -664,6 +668,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum(
@@ -733,6 +739,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])
@@ -769,6 +777,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])
@@ -799,6 +809,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])
@@ -831,6 +843,8 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
+                if item["answer"] == "":
+                    scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
                 sum_score += sum([int(i) for i in item["score"]]) / len(item["score"])

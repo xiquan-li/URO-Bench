@@ -5,19 +5,67 @@ This repo contains the code of [URO-Bench: A Comprehensive Benchmark for End-to-
 
 ## Contents
 1. [News](#news)
-2. [Setup](#setup)
+2. [Datasets](#datasets)
 3. [Evaluation](#evaluation)
-4. [Datasets](#datasets)
-5. [Leaderboard](#leaderboard)
-6. [Acknowledge](#acknowledge)
-7. [Citation](#citation)
+4. [Leaderboard](#leaderboard)
+5. [Acknowledge](#acknowledge)
+6. [Citation](#citation)
 
 
 ## News
 - [Update Feb. 25, 2025] 🔥🔥🔥 code and data of URO-Bench have been released!
 
 
-## Setup
+## Datasets
+Currently, we support **36** datasets, including **20** different tasks, available at [URO-Bench](https://huggingface.co/datasets/Honggao/URO-Bench).  
+The test sets are divided into 2 tracks, basic and pro.
+
+| Subset          | Track | Lang | # Samples |     Task Type                         |
+|:---------------:|:-----:|:----:|:---------:|:-------------------------------------:|
+| AlpacaEval      | basic | en   |    199    |     Open-Ended QA                     |
+| CommonEval      | basic | en   |    200    |     Open-Ended QA                     |
+| WildchatEval    | basic | en   |    349    |     Open-Ended QA                     |
+| StoralEval      | basic | en   |    201    |     Moral concluding                  |
+| Summary         | basic | en   |    118    |     Summarizing                       |
+| TruthfulEval    | basic | en   |    470    |     Fact QA                           |
+| GaokaoEval      | basic | en   |    303    |     English listening exam            |
+| Gsm8kEval       | basic | en   |    582    |     Math application problem          |
+| MLC             | basic | en   |    177    |     Math, Logic, Commen sense         |
+| Repeat          | basic | en   |    252    |     Repeat                            |
+| AlpacaEval-zh   | basic | zh   |    200    |     Open-Ended QA                     |
+| Claude-zh       | basic | zh   |    273    |     Open-Ended QA                     |
+| LCSTS-zh        | basic | zh   |    229    |     Summarizing                       |
+| MLC-zh          | basic | zh   |    136    |     Math, Logic, Commen sense         |
+| OpenbookQA-zh   | basic | zh   |    257    |     Single-choice QA                  |
+| Repeat-zh       | basic | zh   |    210    |     Repeat                            |
+| CodeSwitching-en| pro   | en   |    70     |     Code switching QA                 |
+| CodeSwitching-zh| pro   | zh   |    70     |     Code switching QA                 |
+| GenEmotion-en   | pro   | en   |    54     |     Speech emotion generation         |
+| GenEmotion-zh   | pro   | zh   |    43     |     Speech emotion generation         |
+| GenStyle-en     | pro   | en   |    44     |     Speech style generation           |
+| GenStyle-zh     | pro   | zh   |    39     |     Speech style generation           |
+| MLCpro-en       | pro   | en   |    91     |     Math, Logic, Commen sense         |
+| MLCpro-zh       | pro   | zh   |    64     |     Math, Logic, Commen sense         |
+| Safety-en       | pro   | en   |    24     |     Pravicy-related                   |
+| Safety-zh       | pro   | zh   |    20     |     Pravicy-related                   |
+| SRT-en          | pro   | en   |    43     |     Singing, Reciting, Tongue twister |
+| SRT-zh          | pro   | zh   |    21     |     Singing, Reciting, Tongue twister |
+| UnderEmotion-en | pro   | en   |    137    |     Speech emotion understanding      |
+| UnderEmotion-zh | pro   | zh   |    79     |     Speech emotion understanding      |
+| Multilingual    | pro   | multi|    1108   |     Multilingual QA                   |
+| ClothoEval-en   | pro   | en   |    265    |     Audio understanding               |
+| MuChoEval-en    | pro   | en   |    311    |     Music understanding               |
+| MtBenchEval-en  | pro   | en   |    190    |     Multi-round conversation          |
+| SpeakerAware-en | pro   | en   |    55     |     Speaker recognition               |
+| SpeakerAware-zh | pro   | zh   |    49     |     Speaker recognition               |
+
+
+## Evaluation
+
+We provide some examples in folder [examples](examples) and [scripts](scripts).  
+We've tried our best to make it easy to use. If you encounter any issues, feel free to contact us through the 'Issues' section.
+
+### Step0: setup
 
 ```bash
 # get environment ready
@@ -30,143 +78,25 @@ pip install -r requirements.txt
 # get data ready
 cd ..
 export HF_ENDPOINT=https://hf-mirror.com    # if you have trouble with the network
-huggingface-cli download --repo-type dataset --resume-download Honggao/URO-Bench/URO-Bench-data.zip --local-dir ./ --local-dir-use-symlinks False
+huggingface-cli download --repo-type dataset --resume-download Honggao/URO-Bench URO-Bench-data.zip --local-dir ./ --local-dir-use-symlinks False
 unzip URO-Bench-data.zip
 ```
 
+### Step1: modify your infer code
+You can modify the code based on examples/example-test/[inference_for_eval.py](examples/example-test/inference_for_eval.py).
+Just wrap your code inside the `load_sdm` and `respond` functions.
 
-## Evaluation
+For multi-round dialogue, please refer to examples/example-test/[inference_multi.py](examples/example-test/inference_multi.py). Ensure the output file matches the required format.
 
-We provide some examples in folder [examples](examples) and [scripts](scripts).
-
-### Step1: modify your infer code (`inference_for_eval.py`)
-Pass the `dataset_name`, `dataset_path`, `infer_output_dir` into `inference_for_eval.py`.  
-```python
-output_dir = args.output_dir
-output_audio_dir = os.path.join(output_dir, "audio")
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir, exist_ok=True)
-if not os.path.exists(output_audio_dir):
-    os.makedirs(output_audio_dir, exist_ok=True)
-pred_text = os.path.join(output_dir, "pred_text.jsonl")
-question_text = os.path.join(output_dir, "question_text.jsonl")
-gt_text = os.path.join(output_dir, "gt_text.jsonl")
-
-logging.info("<========inference starts========>")
-
-with open(args.dataset, "r") as f, jsonlines.open(pred_text, mode="w") as pt, jsonlines.open(question_text, mode="w") as qt, jsonlines.open(gt_text, mode="w") as gt:
-    for step, item in enumerate(jsonlines.Reader(f)):
-        input_path = os.path.join(os.path.dirname(args.dataset), item["source_wav"])
-        input_text = item["source_text"]
-        if "target_text" in item:
-            target_text = item["target_text"]
-        else:
-            target_text = item["source_text"]
-        
-        logging.info(f"Input text: {input_text}")
-        logging.info(f"Output text: {text}")
-        logging.info(f"output audio saved to {output_audio_dir}/{step:04d}.wav")
-        pt.write({str(step).zfill(4): text})
-        qt.write({str(step).zfill(4): input_text})
-        if isinstance(target_text, list):
-            gt.write({str(step).zfill(4): " / ".join(target_text)})
-        else:
-            gt.write({str(step).zfill(4): target_text})
-```
-
-For multi-round dialogue, the `inference_for_eval.py` should be like this.
-```python
-output_jsonl_path = os.path.join(args.output_dir, "output_with_text.jsonl")
-os.makedirs(args.output_dir, exist_ok=True)
-
-with codecs.open(args.input_jsonl, "r", "utf-8") as fin, open(
-    output_jsonl_path, "a", encoding="utf-8") as fout:
-    lines = fin.readlines()
-    for line_idx, line in enumerate(tqdm(lines, desc="Processing dialogues")):
-        line = line.strip()
-        if not line:
-            continue
-        data = json.loads(line)
-        dialogue_id = data["id"]
-        num_round = data["num_round"]
-        dialogue = data["dialogue"]
-
-        for round_idx, round_data in enumerate(dialogue):
-            tqdm.write(f"Processing line {line_idx + 1}, round {round_idx + 1}")
-            user_text = round_data.get("source_text", "")
-            user_wav = round_data.get("source_wav")
-
-            if user_wav and os.path.exists(user_wav):
-                user_input = process_audio(
-                    user_wav, whisper_model, feature_extractor
-                )
-            id_dir = os.path.join(args.output_dir, str(dialogue_id))
-            os.makedirs(id_dir, exist_ok=True)
-            audio_path = os.path.join(id_dir, f"chat_{round_data['round']}.wav")
-            audio = tts_speech.squeeze().cpu()
-            torchaudio.save(audio_path, audio.unsqueeze(0), 22050, format="wav")
-            round_data["output_text"] = complete_text
-
-        fout.write(
-            json.dumps(
-                {"id": dialogue_id, "num_round": num_round, "dialogue": dialogue},
-                ensure_ascii=False,
-            )
-            + "\n"
-        )
-```
-
-### Step2: fill in the bash file (`asr_eval.sh`)
-
+### Step2: fill in the bash file
+Complete the script based on scripts/[example.sh](scripts/example.sh). You just need to change some of the directories' name and the inference part.
 
 ### Step3: run the automatic evaluation pipeline
-Run `asr_eval.sh` and get the results.
+Run `example.sh` and get the results.  
+Remember to fill in your api key in metrics/[mark_gpt.py](metrics/mark_gpt.py).
 ```bash
-bash asr_eval.sh
+bash scripts/example.sh
 ```
-
-
-## Datasets
-Currently, we support **36** datasets, including **20** different tasks, available at [URO-Bench](https://huggingface.co/datasets/Honggao/URO-Bench).
-
-| Subset          | # Samples |       Task Type                         |
-|:---------------:|:---------:|:---------------------------------------:|
-| AlpacaEval      |    199    |     Open-Ended QA                       |
-| CommonEval      |    200    |     Open-Ended QA                       |
-| WildchatEval    |    349    |     Open-Ended QA                       |
-| StoralEval      |    201    |     Moral concluding                    |
-| Summary         |    118    |     Summarizing                         |
-| TruthfulEval    |    470    |     Fact QA                             |
-| GaokaoEval      |    303    |     English listening exam              |
-| Gsm8kEval       |    582    |     Math application problem            |
-| MLC             |    177    |     Math, Logic, Commen sense           |
-| Repeat          |    252    |     Repeat                              |
-| AlpacaEval-zh   |    200    |     Open-Ended QA                       |
-| Claude-zh       |    273    |     Open-Ended QA                       |
-| LCSTS-zh        |    229    |     Summarizing                         |
-| MLC-zh          |    136    |     Math, Logic, Commen sense           |
-| OpenbookQA-zh   |    257    |     Single-choice QA                    |
-| Repeat-zh       |    210    |     Repeat                              |
-| CodeSwitching-en|    70     |     Code switching QA                   |
-| CodeSwitching-zh|    70     |     Code switching QA                   |
-| GenEmotion-en   |    54     |     Speech emotion generation           |
-| GenEmotion-zh   |    43     |     Speech emotion generation           |
-| GenStyle-en     |    44     |     Speech style generation             |
-| GenStyle-zh     |    39     |     Speech style generation             |
-| MLCpro-en       |    91     |     Math, Logic, Commen sense           |
-| MLCpro-zh       |    64     |     Math, Logic, Commen sense           |
-| Safety-en       |    24     |     Pravicy-related                     |
-| Safety-zh       |    20     |     Pravicy-related                     |
-| SRT-en          |    43     |     Singing, Reciting, Tongue twister   |
-| SRT-zh          |    21     |     Singing, Reciting, Tongue twister   |
-| UnderEmotion-en |    137    |     Speech emotion understanding        |
-| UnderEmotion-zh |    79     |     Speech emotion understanding        |
-| Multilingual    |    1108   |     Multilingual QA                     |
-| ClothoEval-en   |    265    |     Audio understanding                 |
-| MuChoEval-en    |    311    |     Music understanding                 |
-| MtBenchEval-en  |    190    |     Multi-round conversation            |
-| SpeakerAware-en |    55     |     Speaker recognition                 |
-| SpeakerAware-zh |    49     |     Speaker recognition                 |
 
 
 ## Leaderboard

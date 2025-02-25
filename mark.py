@@ -30,7 +30,6 @@ def main():
             "ue",
             "ml",
             "sa",
-            "contrast",
         ],
     )
     parser.add_argument("--question", type=str, required=True)
@@ -70,7 +69,7 @@ def main():
     # eval for output audio
     if args.audio_dir is not None:
         mark_utmos.eval(args)
-    if args.answer_text is not None and args.dataset != "multilingual_test":
+    if args.answer_text is not None and args.dataset != "Multilingual":
         mark_wer.eval_wav(args)
 
 
