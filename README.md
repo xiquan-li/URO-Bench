@@ -1,19 +1,55 @@
-# URO-Bench
-
-This repo contains the code of [URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models](https://arxiv.org/abs/2502.17810).
-
-
-## Contents
-1. [News](#news)
-2. [Datasets](#datasets)
-3. [Evaluation](#evaluation)
-4. [Leaderboard](#leaderboard)
-5. [Acknowledge](#acknowledge)
-6. [Citation](#citation)
+<div align="center">
+    <h1>
+    URO-Bench
+    </h1>
+    <p>
+    Official code for evaluating spoken dialogue models with <br>
+    <b><em>URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models</em></b>
+    </p>
+    <p>
+    <img src="src/logo.png" alt="URO-Bench Logo" style="width: 215px; height: 120px;">
+    </p>
+    <p>
+    </p>
+    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/Platform-linux-lightgrey" alt="version"></a>
+    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/Python-3.11+-green" alt="version"></a>
+    <a href="https://huggingface.co/datasets/Honggao/URO-Bench"><img src="https://img.shields.io/badge/Hugging%20Face-Data%20Page-yellow" alt="Hugging Face"></a>
+    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
+</div>
 
 
 ## News
 - [Update Feb. 25, 2025] 🔥🔥🔥 code and data of URO-Bench have been released!
+
+
+## Overview
+This repo contains the code of [URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models](https://arxiv.org/abs/2502.17810).
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="src/overview.png" width="80%" /></td>
+  </tr>
+</table>
+
+In recent years, end-to-end spoken dialogue models (SDMs) have made significant strides. Compared to text-based LLMs, the evaluation of SDMs needs to take **speech-related aspects** into account, such as paralinguistic information and speech quality. However, there is still a lack of comprehensive evaluations for SDMs in speech-to-speech (S2S) scenarios.  
+To address this gap, we propose **URO-Bench**, an extensive benchmark for SDMs. Notably, URO-Bench is the first S2S benchmark that covers evaluations about **multilingualism**, **multi-round dialogues**, and **paralinguistics**. Our benchmark is divided into two difficulty levels: basic track and pro track, consisting of 16 and 20 datasets respectively, evaluating the model's abilities in **U**nderstanding, **R**easoning, and **O**ral conversation. We hope that URO-Bench can effectively facilitate the development of spoken dialogue models by providing a multifaceted evaluation of existing models and helping to track progress in this area.
+
+<table align="center">
+  <tr>
+    <td align="center"><b>Construction of URO-Bench</b><br><img src="src/construction.png" width="80%" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Evaluation of SDM on URO-Bench</b><br><img src="src/evaluation.png" width="80%" /></td>
+  </tr>
+</table>
+
+
+### Contents
+1. [Datasets](#datasets)
+2. [Evaluation](#evaluation)
+3. [Leaderboard](#leaderboard)
+4. [Acknowledge](#acknowledge)
+5. [Citation](#citation)
 
 
 ## Datasets
