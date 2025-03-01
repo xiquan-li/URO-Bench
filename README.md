@@ -7,7 +7,7 @@
     <b><em>URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models</em></b>
     </p>
     <p>
-    <img src="src/logo.png" alt="URO-Bench Logo" style="width: 215px; height: 120px;">
+    <img src="src/logo.png" alt="URO-Bench Logo" style="width: 359px; height: 200px;">
     </p>
     <p>
     </p>
