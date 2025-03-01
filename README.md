@@ -98,10 +98,11 @@ The test sets are divided into 2 tracks, basic and pro.
 
 ## Evaluation
 
+With just four simple steps, you can get all the test results in one go.  
 We provide some examples in folder [examples](examples) and [scripts](scripts).  
 We've tried our best to make it easy to use. If you encounter any issues, feel free to contact us through the 'Issues' section.
 
-### Step0: setup
+### Step 0: setup
 
 ```bash
 # get environment ready
@@ -116,22 +117,25 @@ cd ..
 export HF_ENDPOINT=https://hf-mirror.com    # if you have trouble with the network
 huggingface-cli download --repo-type dataset --resume-download Honggao/URO-Bench URO-Bench-data.zip --local-dir ./ --local-dir-use-symlinks False
 unzip URO-Bench-data.zip
+
+# download whisper-large-v3 (optional)
+# please ignore this if your network is OK
+modelscope download --model AI-ModelScope/whisper-large-v3 --local_dir ./whisper-large-v3
 ```
 
-### Step1: modify your infer code
-You can modify the code based on examples/example-test/[inference_for_eval.py](examples/example-test/inference_for_eval.py).
-Just wrap your code inside the `load_sdm` and `respond` functions.
+### Step 1: modify the inference code
+You can modify the code based on [examples/example-test/inference_for_eval.py](examples/example-test/inference_for_eval.py) (single-round) and [examples/example-test/inference_multi.py](examples/example-test/inference_multi.py) (multi-round). Just wrap the inference code of your SDM inside the `load_sdm` and `respond` functions. Please ensure the output file matches the required format.
 
-For multi-round dialogue, please refer to examples/example-test/[inference_multi.py](examples/example-test/inference_multi.py). Ensure the output file matches the required format.
+### Step 2: modify the scripts
+Fill in [scripts/config.sh](scripts/config.sh) according to the guidelines.  
+Complete the inference part of [scripts/example.sh](scripts/example.sh) according to your inference code. Please modify `line 20` and `line 88`.
 
-### Step2: fill in the bash file
-Complete the script based on scripts/[example.sh](scripts/example.sh). You just need to change some of the directories' name and the inference part.
-
-### Step3: run the automatic evaluation pipeline
+### Step 3: run the automatic evaluation pipeline
 Run `example.sh` and get the results.  
-Remember to fill in your api key in metrics/[mark_gpt.py](metrics/mark_gpt.py).
+You need to pass the path of `config.sh` as a parameter to the bash script.
 ```bash
-bash scripts/example.sh
+# bash scripts/example.sh "/data/ruiqi.yan/URO-Bench/scripts/config.sh"
+bash scripts/example.sh "scripts/config.sh"
 ```
 
 
@@ -142,53 +146,53 @@ The scores of *Whisper-large-v3 + LLMs* are provided as reference.
 ### Basic track
 
 #### EN
-| **Rank** | **Model** | **LLM Scale** | **Repeat↑** | **Summary↑** | **GaokaoEval↑** | **StoralEval↑** | **TruthfulEval↑** | **Gsm8kEval↑** | **MLC↑** | **AlpacaEval↑** | **CommonEval↑** | **WildchatEval↑** | **Avg.UTMOS↑** | **Avg.ASR-WER↓** | **Overall↑** |
+| **Rank** | <div style="width:220px">**Model**</div> | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | <div style="width:120px">**Avg.ASR-WER↓**</div> | **Repeat↑** | **Summary↑** | **GaokaoEval↑** | **StoralEval↑** | **TruthfulEval↑** | **Gsm8kEval↑** | **MLC↑** | **AlpacaEval↑** | **CommonEval↑** | **WildchatEval↑** |
 |:--------:|:------------:|:---------------:|:---------:|:----------:|:-------------:|:-------------:|:---------------:|:------------:|:------:|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------:|
-| *-* | *Whisper + GPT-4o* |   *-*    | *95.24* | *96.16* | *86.47* | *86.97* | *78.24* | *90.72* | *75.71* | *98.29* | *89.77* | *95.74* |   *-*    |   *-*    | *89.33* |
-| *-* | *Whisper + GLM-4-9B-Chat-HF* |   *-*    | *97.18* | *93.45* | *81.85* | *77.68* | *68.81* | *78.64* | *80.04* | *92.53* | *82.27* | *89.99* |   *-*    |   *-*    | *84.24* |
-| *-* | *Whisper + Qwen2-7B-Instruct* |   *-*    | *96.87* | *97.45* | *0.66* | *82.35* | *67.89* | *88.26* | *73.26* | *95.91* | *85.93* | *92.72* |   *-*    |   *-*    | *78.13* |
-| *-* | *Whisper + Llama-3.1-8B-Instruct* |   *-*    | *58.41* | *92.32* | *0.33* | *74.10* | *67.42* | *87.29* | *71.75* | *94.47* | *80.73* | *90.96* |   *-*    |   *-*    | *71.78* |
-| 1 | GLM-4-Voice |   9B    | **90.95** | **91.07** | **64.47** | **73.80** | **59.28** | **30.93** | **57.82** | **80.77** | **63.07** | **78.76** | 4.15 | 12.71% | **69.09** |
-| *-* | *Whisper + Qwen2-0.5B-Instruct* |   *-*    | *60.12* | *78.59* | *0.33* | *49.82* | *39.73* | *35.17* | *52.92* | *58.93* | *57.50* | *63.97* |   *-*    |   *-*    | *49.71* |
-| 2 | Freeze-Omni |   7B    | 70.89 | 78.87 | 26.29 | 57.74 | 46.95 | 2.81 | 42.56 | 52.23 | 48.70 | 55.80 | 4.37 | 16.32% | 48.28 |
-| 3 | LLaMA-Omni |   8B    | 45.62 | 80.68 | 16.06 | 50.65 | 45.13 | 3.89 | 44.44 | 64.36 | 58.40 | 72.19 | 4.02 | 10.42% | 48.14 |
-| 4 | SLAM-Omni  |   0.5B    | 12.26 | 66.21 | 1.32  | 36.95 | 34.65 | 0    | 21.85 | 48.98 | 41.03 | 52.61 | **4.45** | **4.54%** | 31.59 |
-| 5 | Mini-Omni2 |   0.5B    | 8.10  | 40.06 | 0.66  | 28.49 | 26.92 | 0    | 6.97  | 34.81 | 30.70 | 36.43 | 4.43 | 10.24% | 21.31 |
-| 6 | Mini-Omni  |   0.5B    | 5.07  | 32.20 | 0     | 23.25 | 25.06 | 0    | 2.82  | 30.99 | 29.80 | 31.42 | 4.42 | 6.05% | 18.06 |
+| *-* | *Whisper + GPT-4o* |   *-*    | *89.33* |   *-*    |   *-*    | *95.24* | *96.16* | *86.47* | *86.97* | *78.24* | *90.72* | *75.71* | *98.29* | *89.77* | *95.74* |
+| *-* | *Whisper + GLM-4-9B-Chat-HF* |   *-*    | *84.24* |   *-*    |   *-*    | *97.18* | *93.45* | *81.85* | *77.68* | *68.81* | *78.64* | *80.04* | *92.53* | *82.27* | *89.99* |
+| *-* | *Whisper + Qwen2-7B-Instruct* |   *-*    | *78.13* |   *-*    |   *-*    | *96.87* | *97.45* | *0.66* | *82.35* | *67.89* | *88.26* | *73.26* | *95.91* | *85.93* | *92.72* |
+| *-* | *Whisper + Llama-3.1-8B-Instruct* |   *-*    | *71.78* |   *-*    |   *-*    | *58.41* | *92.32* | *0.33* | *74.10* | *67.42* | *87.29* | *71.75* | *94.47* | *80.73* | *90.96* |
+| 1 | GLM-4-Voice |   9B    | **69.09** | 4.15 | 12.71% | **90.95** | **91.07** | **64.47** | **73.80** | **59.28** | **30.93** | **57.82** | **80.77** | **63.07** | **78.76** |
+| *-* | *Whisper + Qwen2-0.5B-Instruct* |   *-*    | *49.71* |   *-*    |   *-*    | *60.12* | *78.59* | *0.33* | *49.82* | *39.73* | *35.17* | *52.92* | *58.93* | *57.50* | *63.97* |
+| 2 | Freeze-Omni |   7B    | 48.28 | 4.37 | 16.32% | 70.89 | 78.87 | 26.29 | 57.74 | 46.95 | 2.81 | 42.56 | 52.23 | 48.70 | 55.80 |
+| 3 | LLaMA-Omni |   8B    | 48.14 | 4.02 | 10.42% | 45.62 | 80.68 | 16.06 | 50.65 | 45.13 | 3.89 | 44.44 | 64.36 | 58.40 | 72.19 |
+| 4 | SLAM-Omni  |   0.5B    | 31.59 | **4.45** | **4.54%** | 12.26 | 66.21 | 1.32  | 36.95 | 34.65 | 0    | 21.85 | 48.98 | 41.03 | 52.61 |
+| 5 | Mini-Omni2 |   0.5B    | 21.31 | 4.43 | 10.24% | 8.10  | 40.06 | 0.66  | 28.49 | 26.92 | 0    | 6.97  | 34.81 | 30.70 | 36.43 |
+| 6 | Mini-Omni  |   0.5B    | 18.06 | 4.42 | 6.05% | 5.07  | 32.20 | 0     | 23.25 | 25.06 | 0    | 2.82  | 30.99 | 29.80 | 31.42 |
 
 
 #### ZH
-| **Rank** | **Model** | **LLM Scale** | **Repeat-zh↑** | **LCSTS-zh↑** | **MLC-zh↑** | **OpenbookQA-zh↑** | **AlpacaEval-zh↑** | **Claude-zh↑** | **Avg.UTMOS↑** | **Avg.ASR-CER↓** | **Overall↑** |
+| **Rank** | <div style="width:220px">**Model**</div> | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | <div style="width:120px">**Avg.ASR-CER↓**</div> | <div style="width:90px">**Repeat-zh↑**</div> | <div style="width:90px">**LCSTS-zh↑**</div> | <div style="width:90px">**MLC-zh↑**</div> | <div style="width:150px">**OpenbookQA-zh↑**</div> | <div style="width:120px">**AlpacaEval-zh↑**</div> | <div style="width:100px">**Claude-zh↑**</div> |
 |:--------:|:------------:|:---------------:|:---------:|:----------:|:-------------:|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------:|
-| *-* | *Whisper + GPT-4o*            | *-* | *63.53*   | *90.80* | *63.73* | *73.54* | *86.80* | *97.36* | *-* | *-* | *79.29* |
-| *-* | *Whisper + GLM-4-9b-Chat-HF*   | *-* | *64.86* | *84.45*   | *60.29*   | *59.66*   | *80.17*   | *92.84*   | *-* | *-* | *73.71*   |
-| *-* | *Whisper + Qwen2-7B-Instruct*    | *-* | *25.16*   | *90.10*   | *60.78*   | *63.29*   | *85.03*   | *97.09*   | *-* | *-* | *70.24*   |
-| 1 | GLM-4-Voice  |   9B    | **79.10** | **77.14** | **46.08** | **49.93** | **69.26** | **84.02** |  3.10  |  **4.54%**  | **67.59** |
-| *-* | *Whisper + LLaMA-3.1-8B-Instruct*  | *-* | *14.15*   | *82.18*   | *57.35*   | *57.07*   | *77.63*   | *89.57*   | *-* | *-* | *62.99*   |
-| *-* | *Whisper + Qwen2-0.5B-Instruct*   | *-* | *13.68*   | *62.77*   | *33.82*   | *23.09*   | *54.50*   | *69.87*   | *-* | *-* | *42.96*   |
-| 2 | Freeze-Omni  |   7B    | 3.66     | 70.33    | 32.43    | 10.89    | 59.40    | 67.76      |  3.60  | 6.36%  | 40.74    |
-| 3 | SLAM-Omni    |   0.5B    | 22.02    | 36.97    | 15.88    | 8.17     | 42.53    | 48.40      |  **3.64**  | 5.15%  | 29.00    |
+| *-* | *Whisper + GPT-4o*            | *-* | *79.29* | *-* | *-* | *63.53*   | *90.80* | *63.73* | *73.54* | *86.80* | *97.36* |
+| *-* | *Whisper + GLM-4-9b-Chat-HF*   | *-* | *73.71*   | *-* | *-* | *64.86* | *84.45*   | *60.29*   | *59.66*   | *80.17*   | *92.84*   |
+| *-* | *Whisper + Qwen2-7B-Instruct*    | *-* | *70.24*   | *-* | *-* | *25.16*   | *90.10*   | *60.78*   | *63.29*   | *85.03*   | *97.09*   |
+| 1 | GLM-4-Voice  |   9B    | **67.59** |  3.10  |  **4.54%**  | **79.10** | **77.14** | **46.08** | **49.93** | **69.26** | **84.02** |
+| *-* | *Whisper + LLaMA-3.1-8B-Instruct*  | *-* | *62.99*   | *-* | *-* | *14.15*   | *82.18*   | *57.35*   | *57.07*   | *77.63*   | *89.57*   |
+| *-* | *Whisper + Qwen2-0.5B-Instruct*   | *-* | *42.96*   | *-* | *-* | *13.68*   | *62.77*   | *33.82*   | *23.09*   | *54.50*   | *69.87*   |
+| 2 | Freeze-Omni  |   7B    | 40.74    |  3.60  | 6.36%  | 3.66     | 70.33    | 32.43    | 10.89    | 59.40    | 67.76      |
+| 3 | SLAM-Omni    |   0.5B    | 29.00    |  **3.64**  | 5.15%  | 22.02    | 36.97    | 15.88    | 8.17     | 42.53    | 48.40      |
 
 
 ### Pro track
 
 #### EN
-| **Rank** | **Model** | **LLM Scale** | **UnderEmotion-en↑** | **CodeSwitching-en↑** | **Safety-en↑** | **ClothoEval-en↑** | **MuChoEval-en↑** | **MLCpro-en↑** | **MtBenchEval-en↑** | **SpeakerAware-en↑** | **SRT-en↑** | **GenEmotion-en↑** | **GenStyle-en↑** | **Multilingual↑** | **Avg.UTMOS↑** | **Avg.ASR-WER↓** | **Overall↑** |
+| **Rank** | <div style="width:100px">**Model**</div> | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | <div style="width:120px">**Avg.ASR-WER↓**</div> | <div style="width:150px">**UnderEmotion-en↑**</div> | <div style="width:150px">**CodeSwitching-en↑**</div> | <div style="width:90px">**Safety-en↑**</div> | <div style="width:120px">**ClothoEval-en↑**</div> | <div style="width:120px">**MuChoEval-en↑**</div> | <div style="width:100px">**MLCpro-en↑**</div> | <div style="width:130px">**MtBenchEval-en↑**</div> | <div style="width:150px">**SpeakerAware-en↑**</div> | <div style="width:70px">**SRT-en↑**</div> | <div style="width:130px">**GenEmotion-en↑**</div> | <div style="width:100px">**GenStyle-en↑**</div> | **Multilingual↑** |
 |:--------:|:------------:|:---------------:|:---------:|:----------:|:-------------:|:-------------:|:---------------:|:------------:|:------:|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------:|:-------------:|:------------------:|
-| 1 | GLM-4-Voice   | 9B | **52.41** | **58.00** | **65.56** | 17.36 | **32.37** | **65.20** | **68.35** | **50.30** | 45.12 | **48.13** | **94.55** | **43.53** | 4.14 | 9.67% | **53.41** |
-| 2 | LLaMA-Omni    | 8B | 36.35     | 25.52     | 43.89     | **22.52** | 15.97     | 47.62     | -         | -         | 25.12 | 8.62      | 83.03     | 21.10     | 3.99 | 7.13% | 32.97     |
-| 3 | Freeze-Omni   | 7B | 48.27     | 37.90     | 58.06     | 1.51  | 0.32      | 5.49      | -         | -         | **46.98** | 18.92     | 66.36     | 20.42     | 4.30 | 25.94% | 30.42     |
-| 4 | SLAM-Omni     | 0.5B | 45.84     | 21.14     | 48.33     | 10.94 | 2.68      | 10.26     | 32.88     | 31.03     | 26.51 | 8.42      | 64.24     | 20.54     | **4.46** | **3.61%** | 26.90     |
-| 5 | Mini-Omni2    | 0.5B | 42.53     | 22.00     | 56.94     | 0.38  | 0.32      | 0         | -         | -         | 20.47 | 3.73      | 44.39     | 20.70     | 4.42 | 7.62% | 21.15     |
-| 6 | Mini-Omni     | 0.5B | 29.05     | 20.38     | 58.89     | 0     | 0         | 0         | -         | -         | 9.77  | 1.29      | 40.30     | 20.83     | 4.42 | 5.63% | 18.05     |
+| 1 | GLM-4-Voice   | 9B | **53.41** | 4.14 | 9.67% | **52.41** | **58.00** | **65.56** | 17.36 | **32.37** | **65.20** | **68.35** | **50.30** | 45.12 | **48.13** | **94.55** | **43.53** |
+| 2 | LLaMA-Omni    | 8B | 32.97     | 3.99 | 7.13% | 36.35     | 25.52     | 43.89     | **22.52** | 15.97     | 47.62     | -         | -         | 25.12 | 8.62      | 83.03     | 21.10     |
+| 3 | Freeze-Omni   | 7B | 30.42     | 4.30 | 25.94% | 48.27     | 37.90     | 58.06     | 1.51  | 0.32      | 5.49      | -         | -         | **46.98** | 18.92     | 66.36     | 20.42     |
+| 4 | SLAM-Omni     | 0.5B | 26.90     | **4.46** | **3.61%** | 45.84     | 21.14     | 48.33     | 10.94 | 2.68      | 10.26     | 32.88     | 31.03     | 26.51 | 8.42      | 64.24     | 20.54     |
+| 5 | Mini-Omni2    | 0.5B | 21.15     | 4.42 | 7.62% | 42.53     | 22.00     | 56.94     | 0.38  | 0.32      | 0         | -         | -         | 20.47 | 3.73      | 44.39     | 20.70     |
+| 6 | Mini-Omni     | 0.5B | 18.05     | 4.42 | 5.63% | 29.05     | 20.38     | 58.89     | 0     | 0         | 0         | -         | -         | 9.77  | 1.29      | 40.30     | 20.83     |
 
 
 #### ZH
-| **Rank** | **Model** | **LLM Scale** | **UnderEmotion-zh↑** | **CodeSwitching-zh↑** | **Safety-zh↑** | **MLCpro-zh↑** | **SpeakerAware-zh↑** | **SRT-zh↑** | **GenEmotion-zh↑** | **GenStyle-zh↑** | **Avg.UTMOS↑** | **Avg.ASR-CER↓** | **Overall↑** |
+| **Rank** | <div style="width:100px">**Model**</div> | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | <div style="width:120px">**Avg.ASR-CER↓**</div> | <div style="width:150px">**UnderEmotion-zh↑**</div> | <div style="width:150px">**CodeSwitching-zh↑**</div> | <div style="width:90px">**Safety-zh↑**</div> | <div style="width:100px">**MLCpro-zh↑**</div> | <div style="width:150px">**SpeakerAware-zh↑**</div> | <div style="width:70px">**SRT-zh↑**</div> | <div style="width:130px">**GenEmotion-zh↑**</div> | <div style="width:100px">**GenStyle-zh↑**</div> |
 |:--------:|:------------:|:---------------:|:---------:|:----------:|:-------------:|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------:|:-------------:|:------------------:|
-| 1 | GLM-4-Voice   | 9B | **74.51** | **72.00** | **57.67** | **47.40** | **52.52** | **67.62** | **44.79** | **93.85** | 3.27 | **4.05%** | **63.80** |
-| 2 | Freeze-Omni   | 7B | 66.08     | 54.67     | 44.00     | 22.40     | -         | 41.90     | 7.83      | 77.78     | 3.67 | 7.46% | 44.95     |
-| 3 | SLAM-Omni     | 0.5B | 27.59     | 43.71     | 35.00     | 10.94     | 38.50     | 37.14     | 5.67      | 72.99     | **3.74** | 4.55% | 33.94     |
+| 1 | GLM-4-Voice   | 9B | **63.80** | 3.27 | **4.05%** | **74.51** | **72.00** | **57.67** | **47.40** | **52.52** | **67.62** | **44.79** | **93.85** |
+| 2 | Freeze-Omni   | 7B | 44.95     | 3.67 | 7.46% | 66.08     | 54.67     | 44.00     | 22.40     | -         | 41.90     | 7.83      | 77.78     |
+| 3 | SLAM-Omni     | 0.5B | 33.94     | **3.74** | 4.55% | 27.59     | 43.71     | 35.00     | 10.94     | 38.50     | 37.14     | 5.67      | 72.99     |
 
 
 

@@ -8,9 +8,9 @@ import jsonlines
 
 
 # set gpt client with your api key
-def set_gpt():
+def set_gpt(openai_api_key):
     # set your api key
-    client = OpenAI()
+    client = OpenAI(api_key=openai_api_key)
     return client
 
 
@@ -584,7 +584,7 @@ def mark(prompt, client):
 
 # eval for different modes
 def eval(args):
-    client = set_gpt()
+    client = set_gpt(args.openai_api_key)
     logging.info("<------start GPT eval------>")
 
     if args.mode == "open":
@@ -921,7 +921,7 @@ def eval(args):
         import base64
 
         # set your api key
-        client = OpenAI()
+        client = OpenAI(api_key=args.openai_api_key)
         template = """
         I need your help to evaluate the performance of several models in a speech interaction scenario where the model is required to perform tasks such as singing, reciting, or reading tongue twisters. 
         The models will receive a user input and generate an audio response.

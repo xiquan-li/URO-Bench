@@ -42,6 +42,7 @@ def main():
     parser.add_argument("--audio_dir", type=str, required=False)
     parser.add_argument("--reference", type=str, required=False)
     parser.add_argument("--answer_contrast", type=str, required=False)
+    parser.add_argument("--openai_api_key", type=str, required=False)
     args = parser.parse_args()
 
     # Set log
