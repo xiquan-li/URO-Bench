@@ -1,6 +1,6 @@
 # URO-Bench
 
-This repo contains the code of [URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models]().
+This repo contains the code of [URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models](https://arxiv.org/abs/2502.17810).
 
 
 ## Contents
@@ -163,5 +163,10 @@ The scores of *Whisper-large-v3 + LLMs* are provided as reference.
 ## Citation
 If you use URO-Bench in your research, please cite the following paper:
 ```
-URO-Bench
+@article{yan2025uro,
+  title={URO-Bench: A Comprehensive Benchmark for End-to-End Spoken Dialogue Models},
+  author={Yan, Ruiqi and Li, Xiquan and Chen, Wenxi and Niu, Zhikang and Yang, Chen and Ma, Ziyang and Yu, Kai and Chen, Xie},
+  journal={arXiv preprint arXiv:2502.17810},
+  year={2025}
+}
 ```
