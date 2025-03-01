@@ -108,14 +108,16 @@ def infer_emotion(model, item):
     }
 
     wav_file = item["audio"]
-    rec_result = model.generate(
-        wav_file,
-        output_dir="./outputs",
-        granularity="utterance",
-        extract_embedding=False,
-    )
-
-    return rec_result[0]["scores"][emo2num[item["emotion"]]]
+    if os.path.exists(wav_file):
+        rec_result = model.generate(
+            wav_file,
+            output_dir="./outputs",
+            granularity="utterance",
+            extract_embedding=False,
+        )
+        return rec_result[0]["scores"][emo2num[item["emotion"]]]
+    else:
+        return 0
 
 
 # eval for GenEmotion
