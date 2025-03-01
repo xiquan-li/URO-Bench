@@ -162,7 +162,7 @@ The scores of *Whisper-large-v3 + LLMs* are provided as reference.
 
 
 #### ZH
-| **Rank** | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Model**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | **Avg.ASR-CER↓** | **Repeat-zh↑** | **LCSTS-zh↑** | **MLC-zh↑** | **OpenbookQA-zh↑** | **AlpacaEval-zh↑** | **Claude-zh↑** |
+| **Rank** | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Model**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | **LLM Scale** | **Overall↑** | **Avg.UTMOS↑** | **Avg.ASR-CER↓** | **Repeat-zh↑** | **LCSTS-zh↑** | **MLC-zh↑** | **OpenbookQA-zh↑** | **AlpacaEval-zh↑** | **Claude-zh↑** |
 |:--------:|:------------:|:---------------:|:---------:|:----------:|:-------------:|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------:|
 | *-* | *Whisper + GPT-4o*            | *-* | *79.29* | *-* | *-* | *63.53*   | *90.80* | *63.73* | *73.54* | *86.80* | *97.36* |
 | *-* | *Whisper + GLM-4-9b-Chat-HF*   | *-* | *73.71*   | *-* | *-* | *64.86* | *84.45*   | *60.29*   | *59.66*   | *80.17*   | *92.84*   |
