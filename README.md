@@ -12,9 +12,10 @@
     <p>
     </p>
     <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/Platform-linux-lightgrey" alt="version"></a>
-    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/Python-3.11+-green" alt="version"></a>
+    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/Python-3.11-blue" alt="version"></a>
+    <a href="https://arxiv.org/abs/2502.17810"><img src="https://img.shields.io/badge/arXiv-2502.17810-B31B1B.svg" alt="arXiv"></a>
     <a href="https://huggingface.co/datasets/Honggao/URO-Bench"><img src="https://img.shields.io/badge/Hugging%20Face-Data%20Page-yellow" alt="Hugging Face"></a>
-    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/License-MIT-red.svg" alt="mit"></a>
+    <a href="https://github.com/Ruiqi-Yan/URO-Bench"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="mit"></a>
 </div>
 
 
@@ -134,8 +135,8 @@ Complete the inference part of [scripts/example.sh](scripts/example.sh) accordin
 Run `example.sh` and get the results.  
 You need to pass the path of `config.sh` as a parameter to the bash script.
 ```bash
-# bash scripts/example.sh "/data/ruiqi.yan/URO-Bench/scripts/config.sh"
-bash scripts/example.sh "scripts/config.sh"
+# bash scripts/example.sh /data/ruiqi.yan/URO-Bench/scripts/config.sh
+bash scripts/example.sh scripts/config.sh
 ```
 
 
