@@ -604,7 +604,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -636,7 +636,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -668,7 +668,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -739,7 +739,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -777,7 +777,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -809,7 +809,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)
@@ -843,7 +843,7 @@ def eval(args):
                 }
                 prompt = get_prompt(args.mode, item)
                 scores = mark(prompt, client)
-                if item["answer"] == "":
+                if item["answer"] == "" or item["answer"] == " ":
                     scores = [0, 0, 0]
                 item["score"] = scores
                 ot.write(item)

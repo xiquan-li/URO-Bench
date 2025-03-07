@@ -18,7 +18,7 @@ whisper_dir=
 # dir of downloaded URO-Bench-data, e.g. /data/ruiqi.yan/URO-Bench-data
 uro_data_dir=
 
-# dir of conda.sh, e.g. /home/visitor/miniconda3/etc/profile.d/conda.sh
+# path of conda.sh, e.g. /home/visitor/miniconda3/etc/profile.d/conda.sh
 # for the use of switching env automatically
 conda_dir=
 
@@ -70,7 +70,7 @@ datasets=(
 
 # choose the datasets you want to test on your SDM, multi-round
 multi_datasets=(
-    "MtBenchEval-en 190 multi basic en"
+    "MtBenchEval-en 190 multi pro en"
     "SpeakerAware-en 55 sa pro en"
     "SpeakerAware-zh 49 sa pro zh"
 )

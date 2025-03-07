@@ -99,7 +99,7 @@ done
 # multi-round datasets
 manifest_format=jsonl
 datasets=(
-    "MtBenchEval-en 190 multi basic en"
+    "MtBenchEval-en 190 multi pro en"
     "SpeakerAware-en 55 sa pro en"
     "SpeakerAware-zh 49 sa pro zh"
 )

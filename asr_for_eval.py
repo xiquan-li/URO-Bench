@@ -34,10 +34,14 @@ def set_whisper(model_dir):
 def main():
     parser = ArgumentParser()
     parser.add_argument("--input_dir", type=str, required=True)
-    parser.add_argument("--model_dir", type=str, required=True)
+    parser.add_argument(
+        "--model_dir", type=str, required=True, help="dir of whisper-large-v3"
+    )
     parser.add_argument("--output_dir", type=str, required=True)
     parser.add_argument("--language", type=str, required=True)
-    parser.add_argument("--number", type=int, required=True)
+    parser.add_argument(
+        "--number", type=int, required=True, help="number of samples in the dataset"
+    )
     parser.add_argument("--multi", action="store_true")
     parser.add_argument("--dataset", type=str, required=False)
     args = parser.parse_args()

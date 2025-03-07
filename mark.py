@@ -31,18 +31,37 @@ def main():
             "ml",
             "sa",
         ],
+        help="mode of scoring criteria",
     )
-    parser.add_argument("--question", type=str, required=True)
-    parser.add_argument("--answer", type=str, required=True)
-    parser.add_argument("--answer_text", type=str, required=False)
+    parser.add_argument(
+        "--question", type=str, required=True, help="file of question text"
+    )
+    parser.add_argument(
+        "--answer", type=str, required=True, help="file of response transcript"
+    )
+    parser.add_argument(
+        "--answer_text",
+        type=str,
+        required=False,
+        help="reference response text to calculate wer",
+    )
     parser.add_argument("--output_dir", type=str, required=True)
-    parser.add_argument("--dataset", type=str, required=True)
+    parser.add_argument("--dataset", type=str, required=True, help="name of dataset")
     parser.add_argument("--dataset_path", type=str, required=True)
     parser.add_argument("--language", type=str, default="en")
-    parser.add_argument("--audio_dir", type=str, required=False)
-    parser.add_argument("--reference", type=str, required=False)
-    parser.add_argument("--answer_contrast", type=str, required=False)
-    parser.add_argument("--openai_api_key", type=str, required=False)
+    parser.add_argument(
+        "--audio_dir",
+        type=str,
+        required=False,
+        help="output audio dir for measuring utmos",
+    )
+    parser.add_argument(
+        "--reference", type=str, required=False, help="file of reference answer"
+    )
+    parser.add_argument(
+        "--openai_api_key", type=str, required=False, help="openai api key"
+    )
+    # parser.add_argument("--answer_contrast", type=str, required=False)
     args = parser.parse_args()
 
     # Set log
