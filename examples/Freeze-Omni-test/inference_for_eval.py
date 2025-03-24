@@ -140,6 +140,8 @@ def inference(pipeline, audio_processor, tts, input_wav_path, output_wav_path):
     """
     wav, fs = sf.read(input_wav_path)
     wav = torch.tensor(wav)
+    if wav.dim() == 2:  # selecting one channel for multi-channel audio
+        wav = wav[:, 0]
     if fs != 16000:
         wav = torchaudio.transforms.Resample(orig_freq=fs, new_freq=16000)(wav.float())
         fs = 16000
